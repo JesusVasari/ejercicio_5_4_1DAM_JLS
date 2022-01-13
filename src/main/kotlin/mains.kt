@@ -8,7 +8,6 @@ import javax.xml.parsers.DocumentBuilderFactory
 fun main(args: Array<String>) {
     val xlmFile: File = File("C:\\xml\\ejercicio")
     val xmlDoc: Document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(xlmFile)
-
     xmlDoc.documentElement.normalize()
 
     println("Root Node:" + xmlDoc.documentElement.nodeName)
