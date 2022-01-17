@@ -6,14 +6,17 @@ import java.io.File
 import javax.xml.parsers.DocumentBuilderFactory
 
 
+class catalogoLibrosXML(cargador: String) {
 
-class catalogoLibrosXML(cargador:String) {
-
+    var doc: Document? = null
     init {
-        val cargador = readXml("C:\\xml\\ejercicio")
+        doc = readXml(cargador)
+        doc?.let{
+            it.documentElement.normalize()
+        }
     }
 
-     fun obtenerAtributosEnMapKV(e: Element): MutableMap<String, String> {
+    fun obtenerAtributosEnMapKV(e: Element): MutableMap<String, String> {
         val mMap = mutableMapOf<String, String>()
         for (j in 0..e.attributes.length - 1)
             mMap.putIfAbsent(e.attributes.item(j).nodeName, e.attributes.item(j).nodeValue)
@@ -49,22 +52,24 @@ class catalogoLibrosXML(cargador:String) {
 
     fun existeLibro(id: String): Boolean {
 
-        val doc = readXml("C:\\xml\\ejercicio")
-        doc.documentElement.normalize()
-        doc.firstChild {
-            val mapa = obtenerAtributosEnMapKV(it)
-            mapa[id]=id
-        }
-        doc.firstChild
-        val mapa = obtenerAtributosEnMapKV(it)
-        mapa[id]=id
+        val nodos = obtenerListaNodosPorNombre(doc!!, "book")
+        nodos.forEach {
+            if (it.getNodeType() === Node.ELEMENT_NODE) {
+                val elem = it as Element
+                val mMap = obtenerAtributosEnMapKV(it)
 
+
+            }
+        }
         return true
     }
 
     fun infoLibro(id: String): Map<String, Any> {
 
-    val id = obtenerAtributosEnMapKV()
+        val doc = readXml("C:\\xml\\ejercicio")
+        doc.documentElement.normalize()
+
+        doc = obtenerAtributosEnMapKV(it)
 
         return true
     }
@@ -77,7 +82,6 @@ fun main() {
     var info: catologoLibrosXML = catologoLibrosXML()
     info.listadoNombre()
     info.existeLibro("bk101")
-
 
 
 }
