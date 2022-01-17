@@ -13,13 +13,7 @@ class catalogoLibrosXML(cargador:String) {
         val cargador = readXml("C:\\xml\\ejercicio")
     }
 
-    fun existeLibro( id: String): Boolean {
-        val id = obtenerListaNodosPorNombre()
-        id.find { it}
-        return true
-    }
-
-    private fun obtenerAtributosEnMapKV(e: Element): MutableMap<String, String> {
+     fun obtenerAtributosEnMapKV(e: Element): MutableMap<String, String> {
         val mMap = mutableMapOf<String, String>()
         for (j in 0..e.attributes.length - 1)
             mMap.putIfAbsent(e.attributes.item(j).nodeName, e.attributes.item(j).nodeValue)
@@ -48,23 +42,42 @@ class catalogoLibrosXML(cargador:String) {
         }
     }
 
-    private fun readXml(pathName: String): Document {
+    fun readXml(pathName: String): Document {
         val xmlFile = File(pathName)
         return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(xmlFile)
     }
 
+    fun existeLibro(id: String): Boolean {
+
+        val doc = readXml("C:\\xml\\ejercicio")
+        doc.documentElement.normalize()
+        doc.firstChild {
+            val mapa = obtenerAtributosEnMapKV(it)
+            mapa[id]=id
+        }
+        doc.firstChild
+        val mapa = obtenerAtributosEnMapKV(it)
+        mapa[id]=id
+
+        return true
+    }
+
     fun infoLibro(id: String): Map<String, Any> {
 
-    val id = obtenerAtributosEnMapKV(e = id)
+    val id = obtenerAtributosEnMapKV()
 
         return true
     }
 }
 
-
+*/
+}
 fun main() {
 
     var info: catologoLibrosXML = catologoLibrosXML()
     info.listadoNombre()
     info.existeLibro("bk101")
+
+
+
 }
