@@ -5,13 +5,13 @@ import org.w3c.dom.NodeList
 import java.io.File
 import javax.xml.parsers.DocumentBuilderFactory
 
-
 class catalogoLibrosXML(cargador: String) {
 
     var doc: Document? = null
+
     init {
         doc = readXml(cargador)
-        doc?.let{
+        doc?.let {
             it.documentElement.normalize()
         }
     }
@@ -24,7 +24,7 @@ class catalogoLibrosXML(cargador: String) {
         return mMap
     }
 
-    fun obtenerListaNodosPorNombre(doc: Document, tagName: String): MutableList<Node> {
+      fun obtenerListaNodosPorNombre(doc: Document, tagName: String): MutableList<Node> {
         val bookList: NodeList = doc.getElementsByTagName(tagName)
         val lista = mutableListOf<Node>()
         for (i in 0..bookList.length - 1)
@@ -33,9 +33,9 @@ class catalogoLibrosXML(cargador: String) {
     }
 
     fun listadoNombre() {
-        val ruta = readXml("C:\\xml\\ejercicio")
-        val lista = obtenerListaNodosPorNombre(ruta, "book")
-        lista.forEach {
+
+        val lista = doc?.let { obtenerListaNodosPorNombre(it, "book") }
+        lista!!.forEach {
             if (it.getNodeType() === Node.ELEMENT_NODE) {
                 val elem = it as Element
                 val mMap = obtenerAtributosEnMapKV(it)
@@ -57,29 +57,35 @@ class catalogoLibrosXML(cargador: String) {
             if (it.getNodeType() === Node.ELEMENT_NODE) {
                 val elem = it as Element
                 val mMap = obtenerAtributosEnMapKV(it)
+                mMap.equals(id)
 
 
             }
+            return true
+
         }
         return true
     }
-
+/*
     fun infoLibro(id: String): Map<String, Any> {
 
-        val doc = readXml("C:\\xml\\ejercicio")
-        doc.documentElement.normalize()
 
         doc = obtenerAtributosEnMapKV(it)
 
         return true
     }
+
+ */
 }
 
-*/
-}
+
+
+
+
+
 fun main() {
 
-    var info: catologoLibrosXML = catologoLibrosXML()
+    var info: catalogoLibrosXML = catalogoLibrosXML("C:\\xml\\ejercicio")
     info.listadoNombre()
     info.existeLibro("bk101")
 
